@@ -38,14 +38,14 @@ First, include the TimerObject to your project:
 Now, you can create a new object in setup():
 
 ```
-SyncTicker tickerObject(callbackFunction, 1000); 
+SyncTicker tickerObject(callbackFunction, 1000);
 tickerObject.start(); //start the ticker.
 ```
 
 In your loop(), add:
 
 ```
-tickerObject.update(); //it will check the SyncTicker 
+tickerObject.update(); //it will check the SyncTicker
 and if necessary, it will run the callback function.
 ```
 
@@ -69,7 +69,7 @@ void printCountUS();
 bool ledState;
 int counterUS;
 
-SyncTicker timer1(printMessage, 0, 1); // once, immediately 
+SyncTicker timer1(printMessage, 0, 1); // once, immediately
 SyncTicker timer2(printCounter, 1000, MILLIS); // internal resolution is milli seconds
 SyncTicker timer3(printCountdown, 1000, 5); // 5 times, every second
 SyncTicker timer4(blink, 500); // changing led every 500ms
@@ -117,7 +117,7 @@ void blink() {
   }
 
 void printCountUS() {
-  counterUS++;  
+  counterUS++;
   if (counterUS == 10000) {
     Serial.println("10000 * 100us");
     counterUS = 0;
@@ -141,7 +141,7 @@ Creates a SyncTicker object
 
 **~SyncTicker()**<br>
 Destructor for SyncTicker object
-  
+
 ### Functions
 
 **void start()**<br>

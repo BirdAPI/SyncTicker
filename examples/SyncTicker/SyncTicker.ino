@@ -57,7 +57,7 @@ void blink() {
   }
 
 void printCountUS() {
-  counterUS++;  
+  counterUS++;
   if (counterUS == 10000) {
     Serial.println("10000 * 100us");
     counterUS = 0;

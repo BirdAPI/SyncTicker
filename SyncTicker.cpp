@@ -24,7 +24,11 @@
 
 #include "SyncTicker.h"
 
-SyncTicker::SyncTicker() { }
+SyncTicker::SyncTicker() {
+  // setup without a function or interval
+  // can still be used by calling tick(), or setup() later
+  setup(nullptr, 0, 0);
+}
 
 SyncTicker::SyncTicker(fptr _callback, uint32_t _timer, uint32_t _repeat, resolution_t _resolution) {
   setup(_callback, _timer, _repeat, _resolution);
@@ -45,8 +49,11 @@ void SyncTicker::setup(fptr _callback, uint32_t _timer, uint32_t _repeat, resolu
   counts = 0;
 }
 
-void SyncTicker::start() {
-  if (callback == nullptr) {
+void SyncTicker::start(uint32_t _interval=0) {
+  if (_interval != 0) {
+    this->interval(_interval);
+  } else if (this->timer == 0)
+    // do not start an uninitialized timer
     return;
   }
 
@@ -62,10 +69,6 @@ void SyncTicker::start() {
 }
 
 void SyncTicker::resume() {
-  if (callback == nullptr) {
-    return;
-  }
-
   if (resolution == MILLIS) {
     lastTime = millis() - diffTime;
   } else {
@@ -113,7 +116,7 @@ bool SyncTicker::tick() {
       if (repeat - counts == 1) {
         enabled = false;
       }
-      counts++;        
+      counts++;
       return true;
     }
   } else {

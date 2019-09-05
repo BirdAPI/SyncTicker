@@ -106,6 +106,11 @@ public:
    */
   void update();
 
+  /** same as update(), except will NOT call any callback
+   *  instead it will return a bool whether or not it is time to execute code
+   */
+  bool tick();
+
   /**
    * @brief set the interval timer
    *
@@ -134,7 +139,6 @@ public:
   uint32_t counter();
 
 private:
-  bool tick();
   bool enabled;
   uint32_t timer;
   uint32_t repeat;
