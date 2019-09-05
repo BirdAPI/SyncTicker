@@ -1,4 +1,4 @@
-/* Ticker library code is placed under the MIT license
+/* SyncTicker library code is placed under the MIT license
  * Copyright (c) 2018 Stefan Staub
  *
  * Permission is hereby granted, free of charge, to any person obtaining
@@ -27,7 +27,7 @@
 
 #include "Arduino.h"
 
-/** Ticker internal resolution
+/** SyncTicker internal resolution
  *
  * @param MICROS default, the resoöution is in micro seconds, max is 70 minutes, the real resoltuion is 4 microseconds at 16MHz CPU cycle
  * @param MILLIS set the resolution to millis, for longer cycles over 70 minutes
@@ -35,7 +35,7 @@
  */
 enum resolution_t {MICROS, MILLIS, MICROS_MICROS};
 
-/** Ticker status
+/** SyncTicker status
  *
  * @param STOPPED default, ticker is stopped
  * @param RUNNIBG ticker is running
@@ -46,11 +46,11 @@ enum status_t {STOPPED, RUNNING, PAUSED};
 
 typedef void (*fptr)();
 
-class Ticker {
+class SyncTicker {
 
 public:
 
-	/** create a Ticker object
+	/** create a SyncTicker object
 	 *
 	 * @param callback the name of the function to call
 	 * @param timer interval length in ms or us
@@ -58,12 +58,12 @@ public:
 	 * @param resolution default MICROS for tickers under 70min, use MILLIS for tickers over 70 min
 	 *
 	 */
-	Ticker(fptr callback, uint32_t timer, uint32_t repeat = 0, resolution_t resolution = MICROS);
+	SyncTicker(fptr callback, uint32_t timer, uint32_t repeat = 0, resolution_t resolution = MICROS);
 
-	/** destructor for the Ticker object
+	/** destructor for the SyncTicker object
 	 *
 	 */
-	~Ticker();
+	~SyncTicker();
 
 	/** start the ticker
 	 *
@@ -85,7 +85,7 @@ public:
 	 */
 	void stop();
 
-	/** must to be called in the main loop(), it will check the Ticker, and if necessary, will run the callback
+	/** must to be called in the main loop(), it will check the SyncTicker, and if necessary, will run the callback
 	 *
 	 */
 	void update();

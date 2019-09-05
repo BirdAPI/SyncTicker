@@ -1,4 +1,4 @@
-Ticker 	KEYWORD1
+SyncTicker 	KEYWORD1
 start	KEYWORD2
 resume	KEYWORD2
 pause	KEYWORD2

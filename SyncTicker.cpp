@@ -1,4 +1,4 @@
-/* Ticker library code is placed under the MIT license
+/* SyncTicker library code is placed under the MIT license
  * Copyright (c) 2018 Stefan Staub
  *
  * Permission is hereby granted, free of charge, to any person obtaining
@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 
-#include "Ticker.h"
+#include "SyncTicker.h"
 
-Ticker::Ticker(fptr callback, uint32_t timer, uint32_t repeat, resolution_t resolution) {
+SyncTicker::SyncTicker(fptr callback, uint32_t timer, uint32_t repeat, resolution_t resolution) {
 	this->resolution = resolution;
 	if (resolution == MICROS) timer = timer * 1000;
 	this->timer = timer;
@@ -35,9 +35,9 @@ Ticker::Ticker(fptr callback, uint32_t timer, uint32_t repeat, resolution_t reso
 	counts = 0;
 	}
 
-Ticker::~Ticker() {}
+SyncTicker::~SyncTicker() {}
 
-void Ticker::start() {
+void SyncTicker::start() {
 	if (callback == NULL) return;
 	if (resolution == MILLIS) lastTime = millis();
 	else lastTime = micros();
@@ -46,7 +46,7 @@ void Ticker::start() {
 	status = RUNNING;
 	}
 
-void Ticker::resume() {
+void SyncTicker::resume() {
 	if (callback == NULL) return;
 	if (resolution == MILLIS) lastTime = millis() - diffTime;
 	else lastTime = micros() - diffTime;
@@ -55,24 +55,24 @@ void Ticker::resume() {
 	status = RUNNING;
 	}
 
-void Ticker::stop() {
+void SyncTicker::stop() {
 	enabled = false;
 	counts = 0;
 	status = STOPPED;
 	}
 
-void Ticker::pause() {
+void SyncTicker::pause() {
 	if (resolution == MILLIS) diffTime = millis() - lastTime;
 	else diffTime = micros() - lastTime;
 	enabled = false;
 	status = PAUSED;
 	}
 
-void Ticker::update() {
+void SyncTicker::update() {
 	if (tick()) callback();
 	}
 
-bool Ticker::tick() {
+bool SyncTicker::tick() {
 	if (!enabled)	return false;
 	if (resolution == MILLIS) {
 		if ((millis() - lastTime) >= timer) {
@@ -93,20 +93,20 @@ bool Ticker::tick() {
 	return false;
 	}
 
-void Ticker::interval(uint32_t timer) {
+void SyncTicker::interval(uint32_t timer) {
 	if (resolution == MICROS) timer = timer * 1000;
 	this->timer = timer;
 	}
 
-uint32_t Ticker::elapsed() {
+uint32_t SyncTicker::elapsed() {
 	if (resolution == MILLIS) return millis() - lastTime;
 	else return micros() - lastTime;
 	}
 
-status_t Ticker::state() {
+status_t SyncTicker::state() {
 	return status;
 	}
 
-uint32_t Ticker::counter() {
+uint32_t SyncTicker::counter() {
 	return counts;
 	}
