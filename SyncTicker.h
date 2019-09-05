@@ -84,7 +84,7 @@ public:
   /** start the ticker
    *
    */
-  void start(uint32_t timer=0);
+  void start(uint32_t timer);
 
   /** resume the ticker. If not started, it will start it.
    *
