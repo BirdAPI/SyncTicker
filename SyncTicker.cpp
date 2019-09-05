@@ -52,7 +52,7 @@ void SyncTicker::setup(fptr _callback, uint32_t _timer, uint32_t _repeat, resolu
 void SyncTicker::start(uint32_t _timer=0) {
   if (_timer != 0) {
     this->interval(_timer);
-  } else if (this->timer == 0)
+  } else if (this->timer == 0) {
     // do not start an uninitialized timer
     return;
   }
