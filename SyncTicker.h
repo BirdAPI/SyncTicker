@@ -38,7 +38,7 @@ enum resolution_t {MICROS, MILLIS, MICROS_MICROS};
 /** SyncTicker status
  *
  * @param STOPPED default, ticker is stopped
- * @param RUNNIBG ticker is running
+ * @param RUNNING ticker is running
  * @param PAUSED ticker is paused
  *
  */
@@ -49,6 +49,12 @@ typedef void (*fptr)();
 class SyncTicker {
 
 public:
+
+  /**
+   * Generic empty constructor for SyncTicker
+   * MUST call setup() BEFORE start() is using this way
+   */
+  SyncTicker();
 
 	/** create a SyncTicker object
 	 *
@@ -64,6 +70,16 @@ public:
 	 *
 	 */
 	~SyncTicker();
+
+  /** configure the SyncTicker object
+   *
+   * @param callback the name of the function to call
+   * @param timer interval length in ms or us
+   * @param repeat default 0 -> endless, repeat > 0 -> number of repeats
+   * @param resolution default MICROS for tickers under 70min, use MILLIS for tickers over 70 min
+   *
+   */
+  void setup(fptr callback, uint32_t timer, uint32_t repeat = 0, resolution_t resolution = MICROS);
 
 	/** start the ticker
 	 *
