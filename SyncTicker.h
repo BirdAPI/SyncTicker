@@ -56,20 +56,20 @@ public:
    */
   SyncTicker();
 
-	/** create a SyncTicker object
-	 *
-	 * @param callback the name of the function to call
-	 * @param timer interval length in ms or us
-	 * @param repeat default 0 -> endless, repeat > 0 -> number of repeats
-	 * @param resolution default MICROS for tickers under 70min, use MILLIS for tickers over 70 min
-	 *
-	 */
-	SyncTicker(fptr callback, uint32_t timer, uint32_t repeat = 0, resolution_t resolution = MICROS);
+  /** create a SyncTicker object
+   *
+   * @param callback the name of the function to call
+   * @param timer interval length in ms or us
+   * @param repeat default 0 -> endless, repeat > 0 -> number of repeats
+   * @param resolution default MICROS for tickers under 70min, use MILLIS for tickers over 70 min
+   *
+   */
+  SyncTicker(fptr callback, uint32_t timer, uint32_t repeat = 0, resolution_t resolution = MICROS);
 
-	/** destructor for the SyncTicker object
-	 *
-	 */
-	~SyncTicker();
+  /** destructor for the SyncTicker object
+   *
+   */
+  ~SyncTicker();
 
   /** configure the SyncTicker object
    *
@@ -81,69 +81,69 @@ public:
    */
   void setup(fptr callback, uint32_t timer, uint32_t repeat = 0, resolution_t resolution = MICROS);
 
-	/** start the ticker
-	 *
-	 */
-	void start();
+  /** start the ticker
+   *
+   */
+  void start();
 
-	/** resume the ticker. If not started, it will start it.
-	 *
-	 */
-	void resume();
+  /** resume the ticker. If not started, it will start it.
+   *
+   */
+  void resume();
 
-	/** pause the ticker
-	 *
-	 */
-	void pause();
+  /** pause the ticker
+   *
+   */
+  void pause();
 
-	/** stops the ticker
-	 *
-	 */
-	void stop();
+  /** stops the ticker
+   *
+   */
+  void stop();
 
-	/** must to be called in the main loop(), it will check the SyncTicker, and if necessary, will run the callback
-	 *
-	 */
-	void update();
+  /** must to be called in the main loop(), it will check the SyncTicker, and if necessary, will run the callback
+   *
+   */
+  void update();
 
-	/**
-	 * @brief set the interval timer
-	 * 
-	 * @param timer interval length in ms or us
-	 */
-	void interval(uint32_t timer);
+  /**
+   * @brief set the interval timer
+   *
+   * @param timer interval length in ms or us
+   */
+  void interval(uint32_t timer);
 
-	/** actual ellapsed time
-	 *
-	 * @returns the elapsed time after the last tick
-	 *
-	 */
-	uint32_t elapsed();
+  /** actual ellapsed time
+   *
+   * @returns the elapsed time after the last tick
+   *
+   */
+  uint32_t elapsed();
 
-	/** get the state of the ticker
-	 *
-	 * @returns the state of the ticker: STOPPED, RUNNING or PAUSED
-	 */
-	status_t state();
+  /** get the state of the ticker
+   *
+   * @returns the state of the ticker: STOPPED, RUNNING or PAUSED
+   */
+  status_t state();
 
-	/** get the numbers of executed repeats
-	 *
-	 * @returns the number of executed repeats
-	 *
-	 */
-	uint32_t counter();
+  /** get the numbers of executed repeats
+   *
+   * @returns the number of executed repeats
+   *
+   */
+  uint32_t counter();
 
 private:
-	bool tick();
-	bool enabled;
-	uint32_t timer;
-	uint32_t repeat;
-	resolution_t resolution = MICROS;
-	uint32_t counts;
-	status_t status;
-	fptr callback;
-	uint32_t lastTime;
-	uint32_t diffTime;
+  bool tick();
+  bool enabled;
+  uint32_t timer;
+  uint32_t repeat;
+  resolution_t resolution = MICROS;
+  uint32_t counts;
+  status_t status;
+  fptr callback;
+  uint32_t lastTime;
+  uint32_t diffTime;
 };
 
 #endif

@@ -141,7 +141,7 @@ Creates a SyncTicker object
 
 **~SyncTicker()**<br>
 Destructor for SyncTicker object
-	
+  
 ### Functions
 
 **void start()**<br>

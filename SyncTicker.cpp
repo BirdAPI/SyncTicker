@@ -46,107 +46,108 @@ void SyncTicker::setup(fptr _callback, uint32_t _timer, uint32_t _repeat, resolu
 }
 
 void SyncTicker::start() {
-	if (callback == nullptr) {
-	  return;
-	}
+  if (callback == nullptr) {
+    return;
+  }
 
-	if (resolution == MILLIS) {
-	  lastTime = millis();
-	} else {
-	  lastTime = micros();
-	}
+  if (resolution == MILLIS) {
+    lastTime = millis();
+  } else {
+    lastTime = micros();
+  }
 
-	enabled = true;
-	counts = 0;
-	status = RUNNING;
+  enabled = true;
+  counts = 0;
+  status = RUNNING;
 }
 
 void SyncTicker::resume() {
-	if (callback == nullptr) {
-	  return;
-	}
+  if (callback == nullptr) {
+    return;
+  }
 
-	if (resolution == MILLIS) {
-	  lastTime = millis() - diffTime;
-	} else {
-	  lastTime = micros() - diffTime;
-	}
+  if (resolution == MILLIS) {
+    lastTime = millis() - diffTime;
+  } else {
+    lastTime = micros() - diffTime;
+  }
 
-	if (status == STOPPED) {
-	  counts = 0;
-	}
-	enabled = true;
-	status = RUNNING;
+  if (status == STOPPED) {
+    counts = 0;
+  }
+  enabled = true;
+  status = RUNNING;
 }
 
 void SyncTicker::stop() {
-	enabled = false;
-	counts = 0;
-	status = STOPPED;
+  enabled = false;
+  counts = 0;
+  status = STOPPED;
 }
 
 void SyncTicker::pause() {
-	if (resolution == MILLIS) {
-	  diffTime = millis() - lastTime;
-	} else {
-	  diffTime = micros() - lastTime;
-	}
+  if (resolution == MILLIS) {
+    diffTime = millis() - lastTime;
+  } else {
+    diffTime = micros() - lastTime;
+  }
 
-	enabled = false;
-	status = PAUSED;
+  enabled = false;
+  status = PAUSED;
 }
 
 void SyncTicker::update() {
-	if (tick()) {
-	  callback();
-	}
+  if (tick()) {
+    callback();
+  }
 }
 
 bool SyncTicker::tick() {
-	if (!enabled)	{
-	  return false;
-	}
+  if (!enabled)  {
+    return false;
+  }
 
-	if (resolution == MILLIS) {
-		if ((millis() - lastTime) >= timer) {
-			lastTime = millis();
-			if (repeat - counts == 1) {
-			  enabled = false;
-			}
-			counts++;				
-	  	return true;
-		}
-	} else {
-		if ((micros() - lastTime) >= timer) {
-			lastTime = micros();
-			if (repeat - counts == 1) enabled = false;
-			counts++;
-			return true;
-		}
-	}
+  if (resolution == MILLIS) {
+    if ((millis() - lastTime) >= timer) {
+      lastTime = millis();
+      if (repeat - counts == 1) {
+        enabled = false;
+      }
+      counts++;        
+      return true;
+    }
+  } else {
+    if ((micros() - lastTime) >= timer) {
+      lastTime = micros();
+      if (repeat - counts == 1) enabled = false;
+      counts++;
+      return true;
+    }
+  }
 
-	return false;
+  return false;
 }
 
 void SyncTicker::interval(uint32_t timer) {
-	if (resolution == MICROS) {
-	  timer = timer * 1000;
-	}
+  if (resolution == MICROS) {
+    timer = timer * 1000;
+  }
 
-	this->timer = timer;
+  this->timer = timer;
 }
 
 uint32_t SyncTicker::elapsed() {
-	if (resolution == MILLIS) {
-	  return millis() - lastTime;
-	} else {
-	  return micros() - lastTime;
-	}
+  if (resolution == MILLIS) {
+    return millis() - lastTime;
+  } else {
+    return micros() - lastTime;
+  }
+}
 
 status_t SyncTicker::state() {
-	return status;
+  return status;
 }
 
 uint32_t SyncTicker::counter() {
-	return counts;
+  return counts;
 }
