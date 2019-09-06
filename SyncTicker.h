@@ -29,8 +29,9 @@
 
 /** SyncTicker internal resolution
  *
- * @param MICROS default, the resoöution is in micro seconds, max is 70 minutes, the real resoltuion is 4 microseconds at 16MHz CPU cycle
- * @param MILLIS set the resolution to millis, for longer cycles over 70 minutes
+ * @param MICROS (default), measure milliseconds timings using microsecond precision, max is 70 minutes
+ * @param MILLIS measure millisecond timings using millisecond precision, for longer cycles over 70 minutes
+ * @param MICROS_MICROS, measure microseconds using microsecond precision
  *
  */
 enum resolution_t {MICROS, MILLIS, MICROS_MICROS};
@@ -44,27 +45,22 @@ enum resolution_t {MICROS, MILLIS, MICROS_MICROS};
  */
 enum status_t {STOPPED, RUNNING, PAUSED};
 
+#define infinite -1
+
 typedef void (*fptr)();
 
 class SyncTicker {
 
 public:
-
-  /**
-   * Generic empty constructor for SyncTicker
-   * MUST call setup() BEFORE start() is using this way
-   */
-  SyncTicker();
-
   /** create a SyncTicker object
    *
    * @param callback the name of the function to call
-   * @param timer interval length in ms or us
-   * @param repeat default 0 -> endless, repeat > 0 -> number of repeats
+   * @param _interval interval length in ms or us
+   * @param repeat default -1 -> endless, repeat > 0 -> number of repeats
    * @param resolution default MICROS for tickers under 70min, use MILLIS for tickers over 70 min
    *
    */
-  SyncTicker(fptr callback, uint32_t timer, uint32_t repeat = 0, resolution_t resolution = MICROS);
+  SyncTicker(fptr callback = nullptr, uint32_t _interval = 0, int32_t repeat = infinite, resolution_t resolution = MICROS);
 
   /** destructor for the SyncTicker object
    *
@@ -74,17 +70,17 @@ public:
   /** configure the SyncTicker object
    *
    * @param callback the name of the function to call
-   * @param timer interval length in ms or us
-   * @param repeat default 0 -> endless, repeat > 0 -> number of repeats
+   * @param _interval interval length in ms or us
+   * @param repeat default -1 -> endless, repeat > 0 -> number of repeats
    * @param resolution default MICROS for tickers under 70min, use MILLIS for tickers over 70 min
    *
    */
-  void setup(fptr callback, uint32_t timer, uint32_t repeat = 0, resolution_t resolution = MICROS);
+  void setup(fptr callback = nullptr, uint32_t _interval = 0, int32_t repeat = infinite, resolution_t resolution = MICROS);
 
   /** start the ticker
    *
    */
-  void start(uint32_t timer);
+  bool start(uint32_t _interval = 0);
 
   /** resume the ticker. If not started, it will start it.
    *
@@ -104,7 +100,13 @@ public:
   /** must to be called in the main loop(), it will check the SyncTicker, and if necessary, will run the callback
    *
    */
-  void update();
+  bool update();
+
+  /**
+   * check whether or not it is time for a tick
+   * @return true if ticker is ready to tick
+   */
+  bool peek();
 
   /** same as update(), except will NOT call any callback
    *  instead it will return a bool whether or not it is time to execute code
@@ -116,7 +118,7 @@ public:
    *
    * @param timer interval length in ms or us
    */
-  void interval(uint32_t timer);
+  void setInterval(uint32_t _interval);
 
   /** actual ellapsed time
    *
@@ -139,15 +141,15 @@ public:
   uint32_t counter();
 
 private:
-  bool enabled;
-  uint32_t timer;
-  uint32_t repeat;
+  uint32_t interval;
+  int32_t repeat;
+  uint32_t runs;
   resolution_t resolution = MICROS;
-  uint32_t counts;
-  status_t status;
+  status_t status = STOPPED;
   fptr callback;
   uint32_t lastTime;
-  uint32_t diffTime;
+  uint32_t pauseDiff;
+  uint32_t now();
 };
 
 #endif
